@@ -1,0 +1,17 @@
+#!/bin/sh
+# antfarm: every commit says who made it, so models and tools can be compared on real work later.
+# Needs an `Agent:` trailer, plus `Model:` unless `Agent: human`. Merge, fixup and squash commits are exempt.
+# Enable once per clone: git config core.hooksPath antfarm/git-hooks
+case "$(head -n 1 "$1")" in Merge*|fixup!*|squash!*|amend!*) exit 0 ;; esac
+trailers=$(git interpret-trailers --parse "$1")
+echo "$trailers" | grep -q '^Agent: *[^ ]' || missing="Agent:"
+echo "$trailers" | grep -qi '^Agent: *human *$' || echo "$trailers" | grep -q '^Model: *[^ ]' || missing="$missing Model:"
+[ -z "$missing" ] && exit 0
+cat >&2 <<EOF
+commit refused: missing trailer(s) $missing
+End the message with (exact model id; a commit you write by hand uses just "Agent: human"):
+
+  Agent: Claude Code
+  Model: claude-opus-5-5
+EOF
+exit 1
