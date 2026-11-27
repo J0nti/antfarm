@@ -30,6 +30,45 @@ flowchart TD
 2. **`/manage-milestone M<n>`** asks you once for the whole milestone, then runs each task through implement → fresh review → fix until clean. Commits still need your yes. It ends with a demo for you to review.
 3. **`/plan-features <idea>`** adds new tasks to the plan whenever you think of something, flagging anything that conflicts with the vision.
 
+See **[example.md](example.md)** for a whole flow from start to finish, with dashboard screenshots.
+
+## Commands
+
+| Command | When | What it does |
+|---|---|---|
+| `/init-antfarm` | Once per project, and after updating | Installs the skills into `.claude/skills`, creates `antfarm/pm/`, adds the workflow rules to `CLAUDE.md`. Run again to upgrade. |
+| `/plan-vision [idea]` | New project | Interviews you and challenges the idea, writes `vision.md`, then a fresh planner creates milestones and tasks with acceptance criteria and test commands. |
+| `/adopt-antfarm [path]` | Project that already has code | Use instead of `/plan-vision`. Surveys the code, writes architecture and conventions, records what works as done tasks (M0), turns TODOs into a backlog, then plans what's next. |
+| `/manage-milestone M<n>` | To build a milestone | Asks you once for the whole task list, then runs up to 2 implementers in parallel worktrees, each followed by a fresh reviewer and bug-fixer until clean. Ends with a demo and human tests. |
+| `/plan-features <idea>` | Any time you have a new idea | Adds tasks to the right milestone, flags conflicts with the vision, cancels tasks it makes obsolete. |
+| `/fetch-feedback [M<n>]` | After you review in the dashboard | Turns your milestone reviews and human test results into fix tasks or ticked criteria. `/fetch-reviews` does the same. |
+| `/review-vision drift` | After each milestone | Checks the project is still on the vision and non-goals. |
+| `/review-vision final` | After the last milestone | End review against your first interview. |
+| `/retire-session` | End of day | Writes a HANDOFF to the timeline so a new session can pick up where you left off. |
+| `/start-task <id>` | One task by hand | Implement a task until its criteria and tests pass. |
+| `/review-task <id>` | One task by hand | Fresh-eyes review against the criteria and vision, written to `review.md`. |
+| `/finish-task <id>` | One task by hand | Verify criteria and tests, then commit and push with your yes. |
+
+## Dashboard
+
+A local web app that shows the plan and lets you give feedback without editing Markdown. It reads `antfarm/pm/` and updates live while agents work.
+
+- **Tasks:** progress per milestone, status, who is on what, what is blocked. Click a task for its criteria, tests and review rounds.
+- **Docs:** the vision, milestones and project docs, with Mermaid diagrams drawn.
+- **Review:** each milestone's demo. Approve, comment or request changes, with pasted screenshots.
+- **Human tests:** things only you can check (real logins, devices, how it looks). Click Works, Broken or Needs change.
+- **Settings:** theme, and hiding done or cancelled tasks (saved in your browser only).
+
+Start it from the project root:
+
+```powershell
+python antfarm\dashboard.py
+```
+
+It opens `http://127.0.0.1:8737` (or the next free port). Stop it with Ctrl+C. On Windows you can also double-click `antfarm\dashboard.cmd`. Options: `--port N`, `--no-open`, `--tui` for a terminal view, `--static` for a read-only HTML file.
+
+![Dashboard Tasks tab](example/dashboard-tasks.jpg)
+
 ## Install with Claude
 
 Open Claude Code in your project and paste the prompt for your system.
