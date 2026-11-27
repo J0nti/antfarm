@@ -65,7 +65,7 @@ Start it from the project root:
 python antfarm\dashboard.py
 ```
 
-It opens `http://127.0.0.1:8737` (or the next free port). Stop it with Ctrl+C. On Windows you can also double-click `antfarm\dashboard.cmd`. Options: `--port N`, `--no-open`, `--tui` for a terminal view, `--static` for a read-only HTML file.
+Your first Claude session after installing explains the dashboard and offers to start it for you. It opens `http://127.0.0.1:8737` (or the next free port). Stop it with Ctrl+C. On Windows you can also double-click `antfarm\dashboard.cmd`. Options: `--port N`, `--no-open`, `--tui` for a terminal view, `--static` for a read-only HTML file.
 
 ![Dashboard Tasks tab](example/dashboard-tasks.jpg)
 

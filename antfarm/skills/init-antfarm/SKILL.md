@@ -24,6 +24,7 @@ Safe to re-run: if `antfarm/pm/` already exists this is an **upgrade** — never
 4. Put this block in `CLAUDE.md` (create it if missing). If an `## Antfarm` section (or the old `## AI workflow` section) already exists, replace it (up to the next `## ` heading) with this version:
    ```markdown
    ## Antfarm
+   - First session in this clone: if `antfarm/.dashboard-intro` does not exist, start your first reply by telling the user about the dashboard in 2-3 lines (a live web view of tasks, docs, milestone demos to review and human tests; start it any time with `python antfarm/dashboard.py`, or double-click `antfarm\dashboard.cmd` on Windows) and ask whether to start it now. If yes, run `python antfarm/dashboard.py` (`python3` on macOS/Linux) in the background; it opens the browser itself; give the user the URL it prints. Either way, then create the empty file `antfarm/.dashboard-intro` so this happens only once.
    - Vision: `antfarm/pm/vision.md` — read it before planning or implementing. Existing projects also have `antfarm/pm/architecture.md` and `antfarm/pm/conventions.md`; the conventions (commands, commit format, branch naming, "must not change") override antfarm's defaults.
    - Tasks: `antfarm/pm/tasks/T-*/task.md`, milestones: `antfarm/pm/milestones/`.
    - Every agent appends to `antfarm/pm/timeline.md`: `- YYYY-MM-DD HH:MM | <agent-role> | <task-id or -> | <run-id or -> | <what was done>` (run-id = the manager run that spawned the agent; agents use the run-id given in their prompt). Bug-fixer role is `bug-fixer`.
