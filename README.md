@@ -4,6 +4,32 @@ Drop an ant farm into any project and watch the colony work: a Claude Code workf
 
 Needs [git](https://git-scm.com/downloads), Python 3 and [Claude Code](https://claude.com/claude-code).
 
+## How it works
+
+```mermaid
+flowchart TD
+    PV["/plan-vision<br/>interview you, write vision.md"] --> PL["Fresh planner agent<br/>milestones, tasks, tests"]
+    PL --> PM[("antfarm/pm<br/>vision, milestones, task.md")]
+    PF["/plan-features<br/>add tasks any time later"] --> PM
+    PM --> MM
+
+    subgraph MM["/manage-milestone M1 — you approve once, tasks run in dependency order"]
+        direction LR
+        IM["Implement<br/>own worktree, max 2"] --> RV["Review<br/>fresh agent"]
+        RV -->|bugs| FX["Fix bugs<br/>up to 3 rounds"] --> RV
+        RV -->|clean| FT["Finish task<br/>tests, you approve commit"]
+    end
+
+    MM --> DM["Milestone demo<br/>demo.md, screenshots, human tests"]
+    DM --> YR["You review<br/>dashboard, /review-vision drift"]
+    YR -->|feedback becomes fix tasks| MM
+    YR -->|next| M2["/manage-milestone M2"]
+```
+
+1. **`/plan-vision`** interviews you and challenges the idea, then a fresh planner splits the approved vision into milestones and small tasks. M1 is the smallest working slice.
+2. **`/manage-milestone M<n>`** asks you once for the whole milestone, then runs each task through implement → fresh review → fix until clean. Commits still need your yes. It ends with a demo for you to review.
+3. **`/plan-features <idea>`** adds new tasks to the plan whenever you think of something, flagging anything that conflicts with the vision.
+
 ## Install with Claude
 
 Open Claude Code in your project and paste the prompt for your system.
